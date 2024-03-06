@@ -1,0 +1,106 @@
+package day04;
+
+class BankAccount {
+	int accNo;
+	String custName;
+	String accType;
+	float balance;
+
+	public BankAccount(int accNo, String custName, String accType, float balance)
+
+	{
+		this.accNo = accNo;
+		this.custName = custName;
+		this.accType = accType;
+		this.balance = balance;
+	}
+
+	public void deposit(float amt) throws NegativeAmount {
+		if (amt > 0) {
+			balance += amt;
+		} else
+			throw new NegativeAmount("Negative amount");
+	}
+
+	public float getBalance() throws LowBalanceException {
+		if (balance < 1000) {
+			throw new LowBalanceException("Low Blance");
+		} else
+			return balance;
+	}
+
+}
+
+class NegativeAmount extends Exception {
+	public NegativeAmount(String str) {
+		super(str);
+	}
+}
+
+package day04;
+
+class NotEligibleException extends Exception {
+    public NotEligibleException(String message) {
+        super(message);
+    }
+}
+
+class CricketRating {
+    private String playerName;
+    private float avgRating;
+    private String coins;
+
+    public CricketRating(String playerName, float critic1, float critic2) {
+        this.playerName = playerName;
+        this.calculateAverageRating(critic1, critic2);
+    }
+
+    public CricketRating(String playerName, float critic1, float critic2, float critic3) {
+        this.playerName = playerName;
+        this.calculateAverageRating(critic1, critic2, critic3);
+    }
+
+    private void calculateAverageRating(float critic1, float critic2) {
+        this.avgRating = (critic1 + critic2) / 2;
+        this.calculateCoins1();
+    }
+
+    private void calculateAverageRating(float critic1, float critic2, float critic3) {
+        this.avgRating = (critic1 + critic2 + critic3) / 3;
+        this.calculateCoins1();
+    }
+
+    private void calculateCoins1() {
+        if (avgRating >= 7) {
+            coins = "Gold";
+        } else if (avgRating >= 5 && avgRating < 7) {
+            coins = "Silver";
+        } else if (avgRating >= 2 && avgRating < 5) {
+            coins = "Copper";
+        } else {
+            try {
+                throw new NotEligibleException("NotEligible");
+            } catch (NotEligibleException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public String calculateCoins() {
+        return coins;
+    }
+
+    public void display() {
+        System.out.println(playerName + " " + avgRating + " " + coins);
+    }
+}
+
+public class D04P02 {
+    public static void main(String[] args) {
+        CricketRating player1 = new CricketRating("John", 9.3f, 9.67f,8.7f);
+        player1.display();
+        System.out.println("*");
+        CricketRating player2 = new CricketRating("Henry", 1.5f, 0f);
+        player2.display();
+    }
+}
